@@ -47,6 +47,7 @@ async def predict(message: Message, state: FSMContext):
     result_dict = create_predict(data, username, count)
     result_str = create_str_from_dict(result_dict)
     await message.answer(f"Ваши итоговые игры:\n{result_str}")
+    await state.reset_state()
 
 
 @dp.message_handler(Command("cancel"), state=Dialog.predict_games)
