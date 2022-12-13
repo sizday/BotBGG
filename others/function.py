@@ -61,7 +61,6 @@ def create_predict(data, username):
     cols = data.gameID.map(items2id)
 
     rating_sparse = csr_matrix((rating, (rows, cols)), shape=(len(user2id), len(items2id)))
-    rating_sparse.toarray()
 
     ALS = AlternatingLeastSquares()
     ALS.fit(rating_sparse)
