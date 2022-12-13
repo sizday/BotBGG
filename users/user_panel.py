@@ -20,7 +20,7 @@ async def wait_username(message: Message, state: FSMContext):
     user_bgg_dict = get_rating_from_bgg(username)
     if user_bgg_dict is None:
         await message.answer("К сожалению, не получилось получить список игр из твоего аккаунта")
-        await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker))))
+        # await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker))))
         await state.reset_state()
     else:
         count_ratings = len(user_bgg_dict)
@@ -34,7 +34,7 @@ async def wait_username(message: Message, state: FSMContext):
             await Dialog.predict_games.set()
         else:
             await message.answer("К сожалению, в твоем аккаунте нет оценок и мы не можем сделать предсказание.")
-            await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker))))
+            # await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker))))
             await state.reset_state()
 
 
