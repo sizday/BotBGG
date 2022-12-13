@@ -67,7 +67,7 @@ def create_predict(data, username, number):
 
     user_id = [key for key, value in id2user.items() if value == username][0]
     predict_user_ids, predict_user_percents = ALS.recommend(user_id, rating_sparse,
-                                                            filter_already_liked_items=False, N=number)
+                                                            filter_already_liked_items=False, N=int(number))
 
     result = {}
     for num_id, user_id in enumerate(predict_user_ids):
