@@ -25,13 +25,13 @@ async def wait_username(message: Message, state: FSMContext):
     else:
         count_ratings = len(user_bgg_dict)
         if count_ratings > 0:
-            await message.answer(f"Спасибо за предоставленные данные. В твоем аккаунте {count_ratings} оценок. "
-                                 f"Далее необходимо немного подождать для получений предсказания")
+            await message.answer(f"Спасибо за предоставленные данные. В твоем аккаунте {count_ratings} оценок.")
             await message.answer_sticker(positive_sticker.get(random.randint(0, len(positive_sticker))))
+            await message.answer(f"Напиши сколько игр ты хочешь получить?")
             data = get_overall_df(username, user_bgg_dict)
-            result_dict = create_predict(data, username)
-            result_str = create_str_from_dict(result_dict)
-            await message.answer(f"Ваши итоговые игры:\n{result_str}")
+            await state.update_data(user_data=data)
+            await state.update_data(username=username)
+            await Dialog.predict_games.set()
         else:
             await message.answer("К сожалению, в твоем аккаунте нет оценок и мы не можем сделать предсказание.")
             await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker))))
@@ -40,4 +40,16 @@ async def wait_username(message: Message, state: FSMContext):
 
 @dp.message_handler(state=Dialog.predict_games)
 async def predict(message: Message, state: FSMContext):
-    pass
+    count = message.text.lower()
+    state_data = await state.get_data()
+    data = state_data.get("user_data")
+    username = state_data.get("username")
+    result_dict = create_predict(data, username, count)
+    result_str = create_str_from_dict(result_dict)
+    await message.answer(f"Ваши итоговые игры:\n{result_str}")
+
+
+@dp.message_handler(Command("cancel"), state=Dialog.predict_games)
+async def cancel(message: Message, state: FSMContext):
+    await message.answer("Вы отменили предсказание игр")
+    await state.reset_state()

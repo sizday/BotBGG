@@ -47,7 +47,7 @@ def get_overall_df(username, result_dict):
     return data
 
 
-def create_predict(data, username):
+def create_predict(data, username, number):
     unique_users = data['userID'].unique()
     unique_items = data['gameID'].unique()
     id2user = {key: value for key, value in enumerate(unique_users)}
@@ -67,7 +67,7 @@ def create_predict(data, username):
 
     user_id = [key for key, value in id2user.items() if value == username][0]
     predict_user_ids, predict_user_percents = ALS.recommend(user_id, rating_sparse,
-                                                            filter_already_liked_items=False, N=10)
+                                                            filter_already_liked_items=False, N=number)
 
     result = {}
     for num_id, user_id in enumerate(predict_user_ids):

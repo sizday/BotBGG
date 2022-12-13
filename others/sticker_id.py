@@ -1,4 +1,4 @@
-positive_sticker = {
+negative_sticker = {
     0: 'CAACAgIAAxkBAAKkWV68NvBLz4ZxAatWcbhMcoUXY_fTAAJNCQACeVziCfzk6s8SBAFXGQQ',
     1: 'CAACAgIAAxkBAAKkXV68NxF-ipm8Un6ks1-5DSWfW4B0AAIiAAOWn4wOC0mKktQemY0ZBA',
     2: 'CAACAgIAAxkBAAKkZ168N0UzkGwa1jT2rCo4s7xD4EL7AAJkAAPkoM4HEIke3_qa-mgZBA',
@@ -11,7 +11,7 @@ positive_sticker = {
     9: 'CAACAgIAAxkBAAKkq168OPP6ShazQeqgdJC79dREKXhyAAIkAAPANk8ThPyD5Q6TyicZBA'
 }
 
-negative_sticker = {
+positive_sticker = {
     0: 'CAACAgIAAxkBAAKkVV68Nt1rEZN_VUJuZ4-6It856QWtAAJgCQACeVziCSWHSkOIrb0eGQQ',
     1: 'CAACAgIAAxkBAAKkYV68NyXEUU17STcL9bmk4oCio9NrAAIzAAOWn4wO5zZp4mHsLdcZBA',
     2: 'CAACAgIAAxkBAAKkZV68Nzs2xxL6xZBLz8tgxefwyrImAAJiAAPkoM4H8I5GEMlKpH0ZBA',
