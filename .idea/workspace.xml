@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bcbb3900-f6a2-49cb-af22-bfdab9e6f146" name="Changes" comment="Initial commit" />
+    <list default="true" id="bcbb3900-f6a2-49cb-af22-bfdab9e6f146" name="Changes" comment="Initial commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/others/function.py" beforeDir="false" afterPath="$PROJECT_DIR$/others/function.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,6 +44,9 @@
       <recent name="C:\Users\dsizo\PycharmProjects\BotBGG" />
       <recent name="C:\Users\dsizo\PycharmProjects\BotBGG\others" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dsizo\PycharmProjects\BotBGG" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -54,6 +60,7 @@
       <workItem from="1670924168835" duration="10000" />
       <workItem from="1670944987642" duration="702000" />
       <workItem from="1670946975080" duration="1196000" />
+      <workItem from="1670966100907" duration="849000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1670878561183</created>
@@ -69,7 +76,35 @@
       <option name="project" value="LOCAL" />
       <updated>1670945068707</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Initial commit">
+      <created>1670966119684</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1670966119684</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Initial commit">
+      <created>1670966234310</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1670966234310</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Initial commit">
+      <created>1670966301316</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1670966301316</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Initial commit">
+      <created>1670966384321</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1670966384321</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

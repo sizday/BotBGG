@@ -9,8 +9,13 @@ def get_rating_from_bgg(username):
     url = f'https://boardgamegeek.com/xmlapi2/collection?username={username}'
     response = requests.get(url)
     data = xmltodict.parse(response.content)
-    items = data['items']['item']
     result_dict = {}
+
+    try:
+        items = data['items']['item']
+    except Exception as ex:
+        return result_dict
+
     for item in items:
         game_id = item['@objectid']
         if 'stats' in item.keys():
