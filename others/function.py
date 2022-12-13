@@ -7,15 +7,18 @@ from implicit.als import AlternatingLeastSquares
 
 def get_rating_from_bgg(username):
     url = f'https://boardgamegeek.com/xmlapi2/collection?username={username}'
-    response = requests.get(url)
-    data = xmltodict.parse(response.content)
+    items = None
+    for i in range(10):
+        response = requests.get(url)
+        data = xmltodict.parse(response.content)
+        if 'items' in data.keys():
+            items = data['items']['item']
+            break
+
+    if not items:
+        return None
+
     result_dict = {}
-
-    try:
-        items = data['items']['item']
-    except Exception as ex:
-        return result_dict
-
     for item in items:
         game_id = item['@objectid']
         if 'stats' in item.keys():
@@ -33,7 +36,7 @@ def get_rating_from_bgg(username):
 
 
 def get_overall_df(username, result_dict):
-    bgg_sep_path = "bggsep.csv"
+    bgg_sep_path = r"bggsep.csv"
     data_export = pd.read_csv(bgg_sep_path)
     data_export = data_export.drop(['Unnamed: 0'], axis=1)
 

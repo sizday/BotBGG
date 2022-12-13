@@ -18,19 +18,24 @@ async def predict_user(message: Message):
 async def wait_username(message: Message, state: FSMContext):
     username = message.text.lower()
     user_bgg_dict = get_rating_from_bgg(username)
-    count_ratings = len(user_bgg_dict)
-    if count_ratings > 0:
-        await message.answer(f"Спасибо за предоставленные данные. В твоем аккаунте {count_ratings} оценок. "
-                             f"Далее необходимо немного подождать для получений предсказания")
-        await message.answer_sticker(positive_sticker.get(random.randint(0, len(positive_sticker))))
-        data = get_overall_df(username, user_bgg_dict)
-        result_dict = create_predict(data, username)
-        result_str = create_str_from_dict(result_dict)
-        await message.answer(f"Ваши итоговые игры:\n{result_str}")
-    else:
-        await message.answer("К сожалению, в твоем аккаунте нет оценок и мы не можем сделать предсказание.")
+    if user_bgg_dict is None:
+        await message.answer("К сожалению, не получилось получить список игр из твоего аккаунта")
         await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker))))
         await state.reset_state()
+    else:
+        count_ratings = len(user_bgg_dict)
+        if count_ratings > 0:
+            await message.answer(f"Спасибо за предоставленные данные. В твоем аккаунте {count_ratings} оценок. "
+                                 f"Далее необходимо немного подождать для получений предсказания")
+            await message.answer_sticker(positive_sticker.get(random.randint(0, len(positive_sticker))))
+            data = get_overall_df(username, user_bgg_dict)
+            result_dict = create_predict(data, username)
+            result_str = create_str_from_dict(result_dict)
+            await message.answer(f"Ваши итоговые игры:\n{result_str}")
+        else:
+            await message.answer("К сожалению, в твоем аккаунте нет оценок и мы не можем сделать предсказание.")
+            await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker))))
+            await state.reset_state()
 
 
 @dp.message_handler(state=Dialog.predict_games)
