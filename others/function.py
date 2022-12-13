@@ -36,7 +36,7 @@ def get_rating_from_bgg(username):
 
 
 def get_overall_df(username, result_dict):
-    bgg_sep_path = r"bggsep.csv"
+    bgg_sep_path = r"others/bggsep.csv"
     data_export = pd.read_csv(bgg_sep_path)
     data_export = data_export.drop(['Unnamed: 0'], axis=1)
 
