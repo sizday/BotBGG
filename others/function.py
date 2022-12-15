@@ -3,9 +3,11 @@ import xmltodict
 import pandas as pd
 from scipy.sparse import csr_matrix
 from implicit.als import AlternatingLeastSquares
+from io import StringIO
+from time import sleep
 
 
-def get_rating_from_bgg(username):
+def get_rating_from_bgg_xml(username):
     url = f'https://boardgamegeek.com/xmlapi2/collection?username={username}'
     items = None
     for i in range(10):
@@ -32,18 +34,36 @@ def get_rating_from_bgg(username):
                         result_dict[game_id] = value_float
                     except Exception as ex:
                         pass
-    return result_dict
+
+    bgg_user_list = [(username, rating, game_id) for game_id, rating in result_dict.items()]
+    result_df = pd.DataFrame(bgg_user_list, columns=['userID', 'rating', 'gameID'])
+
+    return result_df
 
 
-def get_overall_df(username, result_dict):
+def get_rating_from_bgg_csv(username):
+    for _ in range(5):
+        try:
+            url = f"https://boardgamegeek.com/geekcollection.php?action=exportcsv" \
+                  f"&subtype=boardgame&username={username}&all=1exporttype=csv"
+            r = requests.get(url)
+            content = r.content.decode()
+            csvStringIO = StringIO(content)
+            df = pd.read_csv(csvStringIO, sep=",", header=0)
+            user_df = df[['objectid', 'rating']]
+            user_df = user_df.rename(columns={'objectid': 'gameID'})
+            user_df.insert(0, "userID", username)
+            return user_df
+        except Exception:
+            sleep(1)
+    return None
+
+
+def get_overall_df(user_df):
     bgg_sep_path = r"others/bggsep.csv"
     data_export = pd.read_csv(bgg_sep_path)
     data_export = data_export.drop(['Unnamed: 0'], axis=1)
-
-    bgg_user_list = [(username, rating, game_id) for game_id, rating in result_dict.items()]
-    bgg_user_df = pd.DataFrame(bgg_user_list, columns=['userID', 'rating', 'gameID'])
-    data = pd.concat([data_export, bgg_user_df])
-
+    data = pd.concat([data_export, user_df])
     return data
 
 
