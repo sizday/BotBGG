@@ -46,11 +46,11 @@ async def wait_username(message: Message, state: FSMContext):
             await message.answer(f"Спасибо за предоставленные данные. В твоем аккаунте {count_ratings} оценок.")
             await message.answer_sticker(positive_sticker.get(random.randint(0, len(positive_sticker)-1)))
             await message.answer(f"Выбери режим предсказания:\n"
-                                 f"Быстро, но не идеально точно, так как обучение идет на небольшом объеме данных\n"
-                                 f"Точнее, но, к сожалению, медленнее")
+                                 f"1. Быстро, но не идеально точно, так как обучение идет на небольшом объеме данных\n"
+                                 f"2. Точнее, но, к сожалению, медленнее")
             await state.update_data(username=username)
             await state.update_data(user_df=user_df)
-            await Prediction.predict_games.set()
+            await Prediction.waiting_size.set()
         else:
             await message.answer("К сожалению, в твоем аккаунте нет оценок и мы не можем сделать предсказание.")
             await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker)-1)))
