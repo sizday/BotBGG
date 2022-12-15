@@ -19,8 +19,8 @@ async def cancel(message: Message, state: FSMContext):
 @dp.message_handler(CommandStart())
 async def predict_user(message: Message):
     await message.answer('В данном боте есть 2 функции:\n'
-                         '1. Предсказание новых настольных игр на основе данных с BGG\n'
-                         '2. Поиск похожих игр на определенную игру')
+                         '1. Предсказание новых настольных игр на основе данных с BGG - /predict\n'
+                         '2. Поиск похожих игр на определенную игру - /similar')
 
 
 @dp.message_handler(Command("predict"))
@@ -65,7 +65,7 @@ async def predict_games(message: Message, state: FSMContext):
     if count.isdigit():
         count = int(count)
         if count > 0:
-            await message.answer(f"Дальнейший процесс займет некоторое время (около 30 секунд). Никуда не уходи!)")
+            await message.answer(f"Дальнейший процесс займет некоторое время (15-30 секунд). Никуда не уходи!")
             result_dict = predict(data, username, count, Method.recommend)
             result_str = create_str_from_dict(result_dict)
             await message.answer(f"Ваши итоговые игры:\n{result_str}")
@@ -111,6 +111,7 @@ async def predict_similar(message: Message, state: FSMContext):
     if count.isdigit():
         count = int(count)
         if count > 0:
+            await message.answer(f"Дальнейший процесс займет некоторое время (15-30 секунд). Никуда не уходи!")
             result_dict = predict(data, game_id, count, Method.similar)
             result_str = create_str_from_dict(result_dict)
             await message.answer(f"На заданную игру я нашел похожими вот такие игры:\n{result_str}")
