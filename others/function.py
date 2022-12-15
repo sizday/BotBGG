@@ -14,6 +14,11 @@ class Method(Enum):
     similar = auto()
 
 
+class DataSize(Enum):
+    small = auto()
+    large = auto()
+
+
 def get_rating_from_bgg_xml(username):
     url = f'https://boardgamegeek.com/xmlapi2/collection?username={username}'
     items = None
@@ -66,15 +71,18 @@ def get_rating_from_bgg_csv(username):
     return None
 
 
-def load_data_from_file():
-    bgg_sep_path = r"others/bggsep.csv"
+def load_data_from_file(data_size: DataSize = DataSize.small):
+    if data_size == DataSize.small:
+        bgg_sep_path = r"data/bggsmall.csv"
+    else:
+        bgg_sep_path = r"data/bgglarge.csv"
     data_export = pd.read_csv(bgg_sep_path)
     data_export = data_export.drop(['Unnamed: 0'], axis=1)
     return data_export
 
 
-def get_overall_df(user_df):
-    data_export = load_data_from_file()
+def get_overall_df(user_df, data_size):
+    data_export = load_data_from_file(data_size)
     data = pd.concat([data_export, user_df])
     return data
 
