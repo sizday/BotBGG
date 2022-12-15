@@ -6,6 +6,7 @@ from preload.load_all import dp
 from others.keyboards import data_size_menu
 from aiogram.utils.markdown import hlink
 from state.state import Prediction, Similar
+from aiogram.types import ReplyKeyboardRemove
 from others.function import get_rating_from_bgg_csv, get_overall_df, predict, \
     create_str_from_dict, get_rating_from_bgg_xml, load_data_from_file, get_game_id_by_name, Method, DataSize
 import random
@@ -70,12 +71,13 @@ async def get_predict_size(message: Message, state: FSMContext):
         data_size = DataSize.large
         time = '2-3 минуты'
     else:
-        await message.answer(f"Такой вариант не предусмотрен. Выбери из двух заданных.")
+        await message.answer(f"Такой вариант не предусмотрен. Выбери из двух заданных.",
+                             reply_markup=ReplyKeyboardRemove())
         await Prediction.waiting_size.set()
     state_data = await state.get_data()
     user_df = state_data.get("user_df")
     data = get_overall_df(user_df, data_size)
-    await message.answer(f"Напиши сколько игр ты хочешь получить?")
+    await message.answer(f"Напиши сколько игр ты хочешь получить?", reply_markup=ReplyKeyboardRemove())
     await state.update_data(user_data=data)
     await state.update_data(predict_time=time)
     await Prediction.predict_games.set()
@@ -123,10 +125,12 @@ async def get_similar_size(message: Message, state: FSMContext):
         data_size = DataSize.large
         time = '2-3 минуты'
     else:
-        await message.answer(f"Такой вариант не предусмотрен. Выбери из двух заданных.")
+        await message.answer(f"Такой вариант не предусмотрен. Выбери из двух заданных.",
+                             reply_markup=ReplyKeyboardRemove())
         await Similar.waiting_size.set()
     await message.answer('Теперь напиши название игры, для которой ты хочешь найти схожие! '
-                         'Главное - необходимо писать точное название на английском языке')
+                         'Главное - необходимо писать точное название на английском языке',
+                         reply_markup=ReplyKeyboardRemove())
     data = load_data_from_file(data_size)
     await state.update_data(bgg_data=data)
     await state.update_data(predict_time=time)
