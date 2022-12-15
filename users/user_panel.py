@@ -3,15 +3,29 @@ from aiogram.types import Message
 from aiogram.dispatcher.filters import Command, CommandStart
 from others.sticker_id import positive_sticker, negative_sticker
 from preload.load_all import dp
+from aiogram.utils.markdown import hlink
 from state.state import Prediction, Similar
 from others.function import get_rating_from_bgg_csv, get_overall_df, predict, \
     create_str_from_dict, get_rating_from_bgg_xml, load_data_from_file, get_game_id_by_name, Method
 import random
 
 
+@dp.message_handler(Command("cancel"))
+async def cancel(message: Message, state: FSMContext):
+    await message.answer("Вы отменили заданное боту задание")
+    await state.reset_state()
+
+
 @dp.message_handler(CommandStart())
 async def predict_user(message: Message):
     await message.answer('Чтобы сделать предсказание, мне необходим твой логин с сайта boardgamesgeek.com')
+    await Prediction.waiting_username.set()
+
+
+@dp.message_handler(Command("predict"))
+async def predict_user(message: Message):
+    bgg_link = hlink('BoardGamesGeek', 'https://boardgamegeek.com/')
+    await message.answer(f'Чтобы сделать предсказание, мне необходим твой логин с сайта {bgg_link}')
     await Prediction.waiting_username.set()
 
 
@@ -82,7 +96,7 @@ async def wait_game(message: Message, state: FSMContext):
         await message.answer_sticker(positive_sticker.get(random.randint(0, len(positive_sticker) - 1)))
         await message.answer(f"Я нашел такую игру. Напиши сколько похожих игр ты хочешь получить?")
         await state.update_data(game_id=game_id)
-        await state.update_data(data=data)
+        await state.update_data(bgg_data=data)
         await Similar.predict_games.set()
 
 
@@ -90,7 +104,7 @@ async def wait_game(message: Message, state: FSMContext):
 async def predict_similar(message: Message, state: FSMContext):
     count = message.text.lower()
     state_data = await state.get_data()
-    data = state_data.get("data")
+    data = state_data.get("bgg_data")
     game_id = state_data.get("game_id")
     if count.isdigit():
         count = int(count)
@@ -105,9 +119,3 @@ async def predict_similar(message: Message, state: FSMContext):
     else:
         await message.answer(f"Введеное значение не является числом. Введите значение заново.")
         await Similar.predict_games.set()
-
-
-@dp.message_handler(Command("cancel"))
-async def cancel(message: Message, state: FSMContext):
-    await message.answer("Вы отменили работу робота")
-    await state.reset_state()
