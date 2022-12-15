@@ -4,13 +4,14 @@ from aiogram.dispatcher.filters import Command, CommandStart
 from others.sticker_id import positive_sticker, negative_sticker
 from preload.load_all import dp
 from state.state import Dialog
-from others.function import get_rating_from_bgg_csv, get_overall_df, create_predict, create_str_from_dict
+from others.function import get_rating_from_bgg_csv, get_overall_df, create_predict, \
+    create_str_from_dict, get_rating_from_bgg_xml
 import random
 
 
 @dp.message_handler(CommandStart())
 async def predict_user(message: Message):
-    await message.answer('Чтобы получить информацию о твоих оценках, введи свой логин с сайте bgg')
+    await message.answer('Чтобы сделать предсказание, мне необходим твой логин с сайта BoardGamesGeek.com')
     await Dialog.waiting_username.set()
 
 
@@ -18,6 +19,8 @@ async def predict_user(message: Message):
 async def wait_username(message: Message, state: FSMContext):
     username = message.text.lower()
     user_df = get_rating_from_bgg_csv(username)
+    if user_df is None:
+        user_df = get_rating_from_bgg_xml(username)
     if user_df is None:
         await message.answer("К сожалению, возникла ошибка, и мне не удалось выгрузить игры из твоего аккаунта.")
         await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker)-1)))
