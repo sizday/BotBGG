@@ -62,7 +62,7 @@ async def cancel(message: Message):
 
 @dp.message_handler(state=Similar.waiting_game)
 async def wait_game(message: Message, state: FSMContext):
-    game_name = message.text.lower()
+    game_name = message.text.lower().capitalize()
     data = load_data_from_file()
     game_id = get_game_id_by_name(data, game_name)
     if game_id is None:
