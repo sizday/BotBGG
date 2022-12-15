@@ -5,6 +5,7 @@ from scipy.sparse import csr_matrix
 from implicit.als import AlternatingLeastSquares
 from io import StringIO
 from time import sleep
+import numpy as np
 
 
 def get_rating_from_bgg_xml(username):
@@ -85,15 +86,17 @@ def create_predict(data, username, number):
     ALS = AlternatingLeastSquares()
     ALS.fit(rating_sparse)
 
-    user_id = [key for key, value in id2user.items() if value == username][0]
-    predict_user_ids, predict_user_percents = ALS.recommend(user_id, rating_sparse,
-                                                            filter_already_liked_items=True, N=int(number))
+    user_ids = np.arange(rating_sparse.shape[0])
+    predict_games, predict_percents = ALS.recommend(user_ids, rating_sparse, filter_already_liked_items=True, N=10)
+
+    user_pred = [id2items[i] for i in predict_games[user2id[username], :]]
+    user_pred_percents = predict_percents[user2id[username], :]
 
     result = {}
-    for num_id, user_id in enumerate(predict_user_ids):
-        game_id = id2items[user_id]
+    for num, game_id in enumerate(user_pred):
         game_name = data[data.gameID == game_id].iloc[0].gameName
-        result.update({game_name: round(predict_user_percents[num_id] * 100, 2)})
+        percent = round(user_pred_percents[num] * 100, 2)
+        result.update({game_name: percent})
 
     return result
 
