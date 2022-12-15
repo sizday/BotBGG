@@ -6,6 +6,12 @@ from implicit.als import AlternatingLeastSquares
 from io import StringIO
 from time import sleep
 import numpy as np
+from enum import Enum, auto
+
+
+class Method(Enum):
+    recommend = auto()
+    similar = auto()
 
 
 def get_rating_from_bgg_xml(username):
@@ -60,15 +66,34 @@ def get_rating_from_bgg_csv(username):
     return None
 
 
-def get_overall_df(user_df):
+def load_data_from_file():
     bgg_sep_path = r"others/bggsep.csv"
     data_export = pd.read_csv(bgg_sep_path)
     data_export = data_export.drop(['Unnamed: 0'], axis=1)
+    return data_export
+
+
+def get_overall_df(user_df):
+    data_export = load_data_from_file()
     data = pd.concat([data_export, user_df])
     return data
 
 
-def create_predict(data, username, number):
+def get_game_id_by_name(data, game_name):
+    unique_items = data['gameID'].unique()
+    id2items = {key: value for key, value in enumerate(unique_items)}
+    game_ids = data.loc[data.gameName == game_name]
+
+    if not game_ids.empty:
+        game_id = game_ids.iloc[0].gameID
+        inv_id2items = {value: key for key, value in id2items.items()}
+        game_order_id = inv_id2items.get(game_id)
+        return game_order_id
+
+    return None
+
+
+def predict(data, value, number, method):
     unique_users = data['userID'].unique()
     unique_items = data['gameID'].unique()
     id2user = {key: value for key, value in enumerate(unique_users)}
@@ -86,12 +111,10 @@ def create_predict(data, username, number):
     ALS = AlternatingLeastSquares()
     ALS.fit(rating_sparse)
 
-    user_ids = np.arange(rating_sparse.shape[0])
-    predict_games, predict_percents = ALS.recommend(user_ids, rating_sparse,
-                                                    filter_already_liked_items=True, N=int(number))
-
-    user_pred = [id2items[i] for i in predict_games[user2id[username], :]]
-    user_pred_percents = predict_percents[user2id[username], :]
+    if method == Method.similar:
+        user_pred, user_pred_percents = predict_similar_games(ALS, data, value, number)
+    else:
+        user_pred, user_pred_percents = create_predict(ALS, id2items, number, rating_sparse, user2id, value)
 
     result = {}
     for num, game_id in enumerate(user_pred):
@@ -100,6 +123,24 @@ def create_predict(data, username, number):
         result.update({game_name: percent})
 
     return result
+
+
+def predict_similar_games(ALS, data, game_id, number):
+    predict_games, predict_percents = ALS.similar_items(int(game_id), int(number) + 1)
+    unique_items = data['gameID'].unique()
+    id2items = {key: value for key, value in enumerate(unique_items)}
+    user_pred = [id2items[i] for i in predict_games][1:]
+    user_pred_percents = predict_percents[1:]
+    return user_pred, user_pred_percents
+
+
+def create_predict(ALS, id2items, number, rating_sparse, user2id, username):
+    user_ids = np.arange(rating_sparse.shape[0])
+    predict_games, predict_percents = ALS.recommend(user_ids, rating_sparse,
+                                                    filter_already_liked_items=True, N=int(number))
+    user_pred = [id2items[i] for i in predict_games[user2id[username], :]]
+    user_pred_percents = predict_percents[user2id[username], :]
+    return user_pred, user_pred_percents
 
 
 def create_str_from_dict(result_dict):
