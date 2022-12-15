@@ -88,7 +88,7 @@ def get_game_id_by_name(data, game_name):
         game_id = game_ids.iloc[0].gameID
         inv_id2items = {value: key for key, value in id2items.items()}
         game_order_id = inv_id2items.get(game_id)
-        return game_order_id
+        return int(game_order_id)
 
     return None
 
@@ -126,7 +126,7 @@ def predict(data, value, number, method):
 
 
 def predict_similar_games(ALS, data, game_id, number):
-    predict_games, predict_percents = ALS.similar_items(int(game_id), int(number) + 1)
+    predict_games, predict_percents = ALS.similar_items(game_id, number + 1)
     unique_items = data['gameID'].unique()
     id2items = {key: value for key, value in enumerate(unique_items)}
     user_pred = [id2items[i] for i in predict_games][1:]
@@ -137,7 +137,7 @@ def predict_similar_games(ALS, data, game_id, number):
 def create_predict(ALS, id2items, number, rating_sparse, user2id, username):
     user_ids = np.arange(rating_sparse.shape[0])
     predict_games, predict_percents = ALS.recommend(user_ids, rating_sparse,
-                                                    filter_already_liked_items=True, N=int(number))
+                                                    filter_already_liked_items=True, N=number)
     user_pred = [id2items[i] for i in predict_games[user2id[username], :]]
     user_pred_percents = predict_percents[user2id[username], :]
     return user_pred, user_pred_percents
