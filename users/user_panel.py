@@ -18,8 +18,9 @@ async def cancel(message: Message, state: FSMContext):
 
 @dp.message_handler(CommandStart())
 async def predict_user(message: Message):
-    await message.answer('Чтобы сделать предсказание, мне необходим твой логин с сайта boardgamesgeek.com')
-    await Prediction.waiting_username.set()
+    await message.answer('В данном боте есть 2 функции:\n'
+                         '1. Предсказание новых настольных игр на основе данных с BGG\n'
+                         '2. Поиск похожих игр на определенную игру')
 
 
 @dp.message_handler(Command("predict"))
@@ -79,7 +80,8 @@ async def predict_games(message: Message, state: FSMContext):
 
 @dp.message_handler(Command("similar"))
 async def cancel(message: Message):
-    await message.answer('Напиши название игры, для которой ты хочешь найти схожие!')
+    await message.answer('Напиши название игры, для которой ты хочешь найти схожие! '
+                         'Главное - необходимо писать точное название на английском языке')
     await Similar.waiting_game.set()
 
 
