@@ -11,7 +11,7 @@ import random
 
 @dp.message_handler(CommandStart())
 async def predict_user(message: Message):
-    await message.answer('Чтобы сделать предсказание, мне необходим твой логин с сайта BoardGamesGeek.com')
+    await message.answer('Чтобы сделать предсказание, мне необходим твой логин с сайта boardgamesgeek.com')
     await Dialog.waiting_username.set()
 
 

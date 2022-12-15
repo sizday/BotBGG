@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bcbb3900-f6a2-49cb-af22-bfdab9e6f146" name="Changes" comment="deleting liked games">
-      <change afterPath="$PROJECT_DIR$/bgg.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/others/function.py" beforeDir="false" afterPath="$PROJECT_DIR$/others/function.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/user_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/user_panel.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +34,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/dsizo/PycharmProjects/test",
+    "last_opened_file_path": "C:/Users/dsizo/PycharmProjects/BotBGG",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)"
   }
@@ -64,7 +63,7 @@
       <workItem from="1670966100907" duration="2982000" />
       <workItem from="1670975215015" duration="399000" />
       <workItem from="1670999828433" duration="70000" />
-      <workItem from="1671112645130" duration="4273000" />
+      <workItem from="1671112645130" duration="5010000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1670878561183</created>
@@ -178,7 +177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671117720647</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="deleting liked games">
+      <created>1671121356852</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1671121356853</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

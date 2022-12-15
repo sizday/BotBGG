@@ -87,7 +87,7 @@ def create_predict(data, username, number):
     ALS.fit(rating_sparse)
 
     user_ids = np.arange(rating_sparse.shape[0])
-    predict_games, predict_percents = ALS.recommend(user_ids, rating_sparse, filter_already_liked_items=True, N=10)
+    predict_games, predict_percents = ALS.recommend(user_ids, rating_sparse, filter_already_liked_items=True, N=number)
 
     user_pred = [id2items[i] for i in predict_games[user2id[username], :]]
     user_pred_percents = predict_percents[user2id[username], :]
