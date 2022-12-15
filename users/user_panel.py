@@ -146,7 +146,7 @@ async def wait_game(message: Message, state: FSMContext):
     if game_id is None:
         await message.answer("К сожалению, я не смог найти такую игру. Попробуйте другую")
         await message.answer_sticker(negative_sticker.get(random.randint(0, len(negative_sticker) - 1)))
-        await state.reset_state()
+        await Similar.waiting_game.set()
     else:
         await message.answer_sticker(positive_sticker.get(random.randint(0, len(positive_sticker) - 1)))
         await message.answer(f"Я нашел такую игру. Напиши сколько похожих игр ты хочешь получить?")
