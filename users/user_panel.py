@@ -62,7 +62,7 @@ async def cancel(message: Message):
 
 @dp.message_handler(state=Similar.waiting_game)
 async def wait_game(message: Message, state: FSMContext):
-    game_name = message.text.lower().capitalize()
+    game_name = message.text.lower().title()
     data = load_data_from_file()
     game_id = get_game_id_by_name(data, game_name)
     if game_id is None:
@@ -81,9 +81,9 @@ async def wait_game(message: Message, state: FSMContext):
 async def predict_similar(message: Message, state: FSMContext):
     count = message.text.lower()
     state_data = await state.get_data()
-    data = state_data.get("game_id")
-    username = state_data.get("data")
-    result_dict = predict(data, username, count, Method.similar)
+    data = state_data.get("data")
+    game_id = state_data.get("game_id")
+    result_dict = predict(data, game_id, count, Method.similar)
     result_str = create_str_from_dict(result_dict)
     await message.answer(f"На заданную игру я нашел похожими вот такие игры:\n{result_str}")
     await state.reset_state()
