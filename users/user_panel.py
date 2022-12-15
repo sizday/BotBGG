@@ -46,7 +46,7 @@ async def wait_username(message: Message, state: FSMContext):
             await message.answer(f"Спасибо за предоставленные данные. В твоем аккаунте {count_ratings} оценок.")
             await message.answer_sticker(positive_sticker.get(random.randint(0, len(positive_sticker)-1)))
             await message.answer(f"Выбери режим предсказания:\n"
-                                 f"1. Быстро, но не идеально точно, так как обучение идет на небольшом объеме данных\n"
+                                 f"1. Быстрее, но не идеально точно, так как обучение идет на небольшом объеме данных\n"
                                  f"2. Точнее, но, к сожалению, медленнее")
             await state.update_data(username=username)
             await state.update_data(user_df=user_df)
@@ -105,8 +105,8 @@ async def predict_games(message: Message, state: FSMContext):
 @dp.message_handler(Command("similar"))
 async def cancel(message: Message):
     await message.answer(f"Для начала выбери режим поиска игр:\n"
-                         f"Быстро, но не идеально точно, так как обучение идет на небольшом объеме данных\n"
-                         f"Точнее, но, к сожалению, медленнее")
+                         f"1. Быстрее, но не идеально точно, так как обучение идет на небольшом объеме данных\n"
+                         f"2. Точнее, но, к сожалению, медленнее")
     await Similar.waiting_size.set()
 
 
