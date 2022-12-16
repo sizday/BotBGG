@@ -70,7 +70,7 @@ async def get_predict_size(message: Message, state: FSMContext):
         time = '15-30 секунд'
     elif data_size == 'точнее':
         data_size = DataSize.large
-        time = '2-3 минуты'
+        time = '1-2 минуты'
     else:
         await message.answer(f"Такой вариант не предусмотрен. Выбери из двух возможных.")
         await Prediction.waiting_size.set()
